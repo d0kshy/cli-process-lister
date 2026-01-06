@@ -29,7 +29,7 @@ int main() {
 
 
     // 4. GET THE FIRST PROCESS
-    if (!Process32First(hProcessSnap, &pe32)) 
+    if (!Process32First(hProcessSnap, &pe32))
     {
         std::cout << "Error: The process list was not found." << std::endl;
         CloseHandle(hProcessSnap);
