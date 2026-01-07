@@ -6,7 +6,7 @@
 
 int main() {
 
-    std::cout << "------------------------- CLI Process Lister -----------------------\n";
+    std::cout << "------------------------------ CLI Process Lister ----------------------------\n";
 
     // 1. DEFINE VARIABLES
     HANDLE hProcessSnap;
@@ -39,23 +39,24 @@ int main() {
 
 
     // 5. LOOP THROUGH THE REST
-    std::cout << "--------------------------------------------------------------------\n";
-    std::cout << std::left << std::setw(35) << "PROCESS NAME" << "PID" << std::endl;
-    std::cout << "--------------------------------------------------------------------\n";
+    std::cout << "------------------------------------------------------------------------------\n";
+    std::cout << std::left << std::setw(50) << "PROCESS NAME" << std::setw(15) << "PID" << "PARENT PID" << std::endl;
+    std::cout << "------------------------------------------------------------------------------\n";
 
     do {
         std::wcout << std::left
-            << std::setw(35) << pe32.szExeFile
+            << std::setw(50) << pe32.szExeFile
             << std::setw(15) << pe32.th32ProcessID
+            << pe32.th32ParentProcessID
             << std::endl;
     } while (Process32Next(hProcessSnap, &pe32));
 
 
     // 6. CLEAN UP
     CloseHandle(hProcessSnap);
-    std::cout << "--------------------------------------------------------------------\n";
-    std::cout << "Scanning complete.\n";
-    std::cout << "--------------------------------------------------------------------\n";
+    std::cout << "------------------------------------------------------------------------------\n\n";
+    std::cout << "SCANNING COMPLETE.\n\n\n";
+
 
     system("pause");
     return 0;
