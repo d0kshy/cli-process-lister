@@ -22,7 +22,7 @@ int main() {
     // 3. CHECKING FOR ERRORS
     if (hThreadSnap == INVALID_HANDLE_VALUE)
     {
-        std::cout << "Error: Snap Process has an invalid handle value." << std::endl;
+        std::cout << "Error: Snap thread has an invalid handle value." << std::endl;
 
         return -1;
     }
@@ -31,7 +31,7 @@ int main() {
     // 4. GET THE FIRST PROCESS
     if (!Thread32First(hThreadSnap, &te32))
     {
-        std::cout << "Error: The process list was not found." << std::endl;
+        std::cout << "Error: The thread list was not found." << std::endl;
         CloseHandle(hThreadSnap);
 
         return -1;
