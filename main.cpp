@@ -9,18 +9,18 @@ int main() {
     std::cout << "------------------------------ CLI Process Lister ----------------------------\n";
 
     // 1. DEFINE VARIABLES
-    HANDLE hProcessSnap;
-    PROCESSENTRY32 pe32;
+    HANDLE hThreadSnap;
+    THREADENTRY32 te32;
 
-    pe32.dwSize = sizeof(PROCESSENTRY32);
+    te32.dwSize = sizeof(THREADENTRY32);
 
 
     // 2. TAKE THE SNAPSHOT
-    hProcessSnap = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
+    hThreadSnap = CreateToolhelp32Snapshot(TH32CS_SNAPTHREAD, 0);
 
 
     // 3. CHECKING FOR ERRORS
-    if (hProcessSnap == INVALID_HANDLE_VALUE)
+    if (hThreadSnap == INVALID_HANDLE_VALUE)
     {
         std::cout << "Error: Snap Process has an invalid handle value." << std::endl;
 
@@ -29,10 +29,10 @@ int main() {
 
 
     // 4. GET THE FIRST PROCESS
-    if (!Process32First(hProcessSnap, &pe32))
+    if (!Thread32First(hThreadSnap, &te32))
     {
         std::cout << "Error: The process list was not found." << std::endl;
-        CloseHandle(hProcessSnap);
+        CloseHandle(hThreadSnap);
 
         return -1;
     }
@@ -40,23 +40,22 @@ int main() {
 
     // 5. LOOP THROUGH THE REST
         std::cout << "------------------------------------------------------------------------------\n";
-        std::cout << std::left << std::setw(50) << "PROCESS NAME" << std::setw(15) << "PID" << "PARENT PID" << std::endl;
+        std::cout << std::left << std::setw(50) << "THREAD NAME" << std::setw(15) << "PID" << std::endl;
         std::cout << "------------------------------------------------------------------------------\n";
 
         do {
-            if (wcscmp(pe32.szExeFile, L"chrome.exe") == 0) {
+            if (te32.th32OwnerProcessID) {
                 std::wcout << std::left
-                    << std::setw(50) << pe32.szExeFile
-                    << std::setw(15) << pe32.th32ProcessID
-                    << pe32.th32ParentProcessID
+                    << std::setw(50) << te32.th32OwnerProcessID
+                    << std::setw(15) << te32.th32ThreadID
                     << std::endl;
             }
-        } while (Process32Next(hProcessSnap, &pe32));
+        } while (Thread32Next(hThreadSnap, &te32));
         
 
 
     // 6. CLEAN UP
-    CloseHandle(hProcessSnap);
+    CloseHandle(hThreadSnap);
     std::cout << "------------------------------------------------------------------------------\n\n";
     std::cout << "SCANNING COMPLETE.\n\n\n";
 
